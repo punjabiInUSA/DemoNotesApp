@@ -7,7 +7,6 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 
 
 
@@ -23,6 +22,8 @@ public class NotesProvider extends ContentProvider {
 
 
     private static final UriMatcher uriMatcher =  new UriMatcher(UriMatcher.NO_MATCH);
+
+    public static final String CONTENT_ITEM_TYPE = "Note";
 
     private SQLiteDatabase mDatabase;
 
@@ -40,21 +41,24 @@ public class NotesProvider extends ContentProvider {
         return true;
     }
 
-    @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+
+        if(uriMatcher.match(uri) == NOTES_ID){
+            selection = DBOpenHelper.NOTE_ID + "=" + uri.getLastPathSegment();
+        }
 
         return mDatabase.query(DBOpenHelper.TABLE_NOTES, DBOpenHelper.ALL_COLUMNS,
                 selection,null, null,null, DBOpenHelper.NOTE_CREATED + " DESC");
     }
 
-    @Nullable
+
     @Override
     public String getType(Uri uri) {
         return null;
     }
 
-    @Nullable
+
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         long id = mDatabase.insert(DBOpenHelper.TABLE_NOTES, null, values);

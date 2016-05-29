@@ -20,10 +20,13 @@
         </activity>
 
         <provider
-            android:authorities="com.demolynda.notesapp.notesprovider"
             android:name=".NotesProvider"
-            android:exported="false"/>
+            android:authorities="com.demolynda.notesapp.notesprovider"
+            android:exported="false" />
 
+        <activity
+            android:name=".EditorActivity"
+            android:parentActivityName=".firstActivity" />
     </application>
 
 </manifest>
